@@ -1,25 +1,23 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "25.0.0"
+    compileSdkVersion project.ANDROID_BUILD_SDK_VERSION as Integer
+    buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION as String
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 24
-        versionCode 1
-        versionName "1.0"
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+        minSdkVersion project.ANDROID_BUILD_MIN_SDK_VERSION as Integer
+        targetSdkVersion project.ANDROID_BUILD_SDK_VERSION as Integer
+        versionCode project.VERSION_CODE as Integer
+        versionName project.VERSION_NAME as String
+        group = project.GROUP as String
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+
+    lintOptions {
+        abortOnError false
     }
 }
+
 
 dependencies {
     compile 'com.facebook.fresco:fresco:0.14.1'
