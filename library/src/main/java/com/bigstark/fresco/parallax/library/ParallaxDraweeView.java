@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -17,13 +18,15 @@ public class ParallaxDraweeView extends SimpleDraweeView {
     private final RectF rect = new RectF();
     private final Matrix matrix = new Matrix();
     private float scale = 0f;
+    private float ratio = 0f;
     private float translationX = 0f;
 
     private int parentTop = 0;
     private int parentBottom = 0;
 
-    private float lastTranslationY = 0f;
     private float distance = 0;
+    private float lastTranslationY = 0;
+
 
 
     public ParallaxDraweeView(Context context) {
@@ -46,7 +49,8 @@ public class ParallaxDraweeView extends SimpleDraweeView {
     }
 
 
-    public void setParentTop(int top, int bottom) {
+
+    public void setParentTopAndBottom(int top, int bottom) {
         parentTop = top;
         parentBottom = bottom;
 
@@ -54,13 +58,14 @@ public class ParallaxDraweeView extends SimpleDraweeView {
         scroll();
     }
 
-
     private void initMatrixValues() {
         matrix.reset();
         getHierarchy().getActualImageBounds(rect);
         matrix.mapRect(rect);
 
         scale = (float) getWidth()/ rect.width();
+        ratio = rect.height() / rect.width();
+
         translationX = - (getWidth() - rect.width()) / 2 * scale;
         matrix.postScale(scale, scale);
         matrix.postTranslate(translationX, 0f);
@@ -68,20 +73,14 @@ public class ParallaxDraweeView extends SimpleDraweeView {
 
 
     private void initTranslationValues() {
-        int viewHeight = getHeight();
-        distance = (-viewHeight + parentTop) - parentBottom;
-        lastTranslationY = scale * viewHeight - viewHeight;
+        distance = (parentBottom - getHeight()) - parentTop;
+        lastTranslationY = -(ratio * getWidth() - getHeight());
     }
 
 
     public void scroll() {
         resetMatrix();
-
-        int[] location = new int[2];
-        getLocationInWindow(location);
-        int top = location[1];
-
-        translate(-(top - parentBottom) / distance * lastTranslationY);
+        translate(getCurrentTranslationY());
     }
 
 
@@ -90,6 +89,16 @@ public class ParallaxDraweeView extends SimpleDraweeView {
         matrix.mapRect(rect);
         matrix.postScale(scale, scale);
         matrix.postTranslate(translationX, 0f);
+    }
+
+
+    int[] location = new int[2];
+    public float getCurrentTranslationY() {
+        getLocationInWindow(location);
+
+        int top = location[1];
+        float percent = (parentBottom - getHeight() - top) / distance;
+        return (1 - percent) * lastTranslationY;
     }
 
 
