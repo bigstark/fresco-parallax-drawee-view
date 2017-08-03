@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.RectF;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -101,7 +100,7 @@ public class ParallaxDraweeView extends SimpleDraweeView {
 
 
     @Override
-    protected void onDraw(@NonNull Canvas canvas) {
+    protected void onDraw(Canvas canvas) {
         int saveCount = canvas.save();
         canvas.concat(matrix);
         super.onDraw(canvas);
