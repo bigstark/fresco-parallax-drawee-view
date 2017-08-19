@@ -2,13 +2,9 @@ package com.bigstark.fresco.parallax;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.SeekBar;
 
 import com.bigstark.fresco.parallax.library.ParallaxDraweeView;
-import com.facebook.drawee.backends.pipeline.Fresco;
 
 public class SampleActivity extends AppCompatActivity {
 
@@ -26,7 +22,7 @@ public class SampleActivity extends AppCompatActivity {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                pdvSample.scrollY((float) progress / 100);
+                pdvSample.setOffset((float) progress / 100);
             }
 
             @Override
