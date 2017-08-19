@@ -50,7 +50,7 @@ ParallaxDraweeView pdvSample = (ParallaxDraweeView) findViewById(R.id.pdv_sample
 pdvSample.setImageURI(IMAGE_URI);
 
 float offset = 0.5f;
-pdvSample.scrollY(offset); // It could be run after image loaded.
+pdvSample.setOffset(offset); // It could be run after image loaded.
 ```
 
 
