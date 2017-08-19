@@ -115,11 +115,17 @@ public class ParallaxDraweeView extends SimpleDraweeView {
     }
 
 
-
-    public void scrollY(float percent) {
+    /**
+     * translate actual image by offset.
+     *
+     * @param offset is between 0 to 1.
+     *               0 : view top      <->     image top
+     *               1 : view bottom   <->     image bottom
+     */
+    public void setOffset(float offset) {
         resetMatrix();
 
-        float translationY = (rect.height() * scale - getHeight()) * percent;
+        float translationY = (rect.height() * scale - getHeight()) * offset;
         matrix.postTranslate(0, -translationY);
         postInvalidate();
     }
