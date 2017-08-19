@@ -6,6 +6,8 @@ It is hard to use parallax effect in your app when you are using fresco image lo
 
 But if you use this library, you can use parallax effect while using fresco.
 
+![ParallaxDraweeView](https://github.com/bigstark/fresco-parallax-drawee-view/blob/master/screenshots/ParallaxDraweeView.gif)
+
 
 ## Include your project
 add build.gradle
