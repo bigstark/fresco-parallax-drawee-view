@@ -1,12 +1,14 @@
 package com.bigstark.fresco.parallax.library;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 
+import com.facebook.drawee.generic.GenericDraweeHierarchy;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 /**
@@ -15,56 +17,97 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 public class ParallaxDraweeView extends SimpleDraweeView {
 
+    private ValueAnimator observerImageLoading;
+
+
+    // It would be actual image rect.
     private final RectF rect = new RectF();
+
+    // It would be draw matrix.
     private final Matrix matrix = new Matrix();
-    private float scale = 0f;
-    private float ratio = 0f;
+
+    // scale between image width and view width
+    private float scale = 1f;
+
+
+    // It is fixed when initiated first time.
     private float translationX = 0f;
 
-    private int parentTop = 0;
-    private int parentBottom = 0;
 
-    private float distance = 0;
-    private float lastTranslationY = 0;
-
-
+    public ParallaxDraweeView(Context context, GenericDraweeHierarchy hierarchy) {
+        super(context, hierarchy);
+        setScaleType(ScaleType.FIT_CENTER);
+    }
 
     public ParallaxDraweeView(Context context) {
         super(context);
+        setScaleType(ScaleType.FIT_CENTER);
     }
 
     public ParallaxDraweeView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        setScaleType(ScaleType.FIT_CENTER);
     }
 
     public ParallaxDraweeView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        setScaleType(ScaleType.FIT_CENTER);
+    }
+
+    public ParallaxDraweeView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        setScaleType(ScaleType.FIT_CENTER);
     }
 
 
-    public void update() {
-        initMatrixValues();
-        initTranslationValues();
-        scroll();
+    @Override
+    protected void onDraw(Canvas canvas) {
+        if (observerImageLoading == null) {
+            initObserver();
+        }
+
+        int saveCount = canvas.save();
+        canvas.concat(matrix);
+
+        super.onDraw(canvas);
+        canvas.restoreToCount(saveCount);
     }
 
 
+    private void initObserver() {
+        observerImageLoading = ValueAnimator.ofInt(0, 1);
+        observerImageLoading.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {}
 
-    public void setParentTopAndBottom(int top, int bottom) {
-        parentTop = top;
-        parentBottom = bottom;
+            @Override
+            public void onAnimationEnd(Animator animation) {}
 
-        initTranslationValues();
-        scroll();
+            @Override
+            public void onAnimationCancel(Animator animation) {}
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+                resetMatrix();
+                postInvalidate();
+
+                if (rect.width() != 0) {
+                    observerImageLoading.cancel();
+                }
+            }
+        });
+        observerImageLoading.setDuration(60);
+        observerImageLoading.setRepeatCount(ValueAnimator.INFINITE);
+        observerImageLoading.start();
     }
 
-    private void initMatrixValues() {
+
+    private void resetMatrix() {
         matrix.reset();
         getHierarchy().getActualImageBounds(rect);
         matrix.mapRect(rect);
 
-        scale = (float) getWidth()/ rect.width();
-        ratio = rect.height() / rect.width();
+        scale = (float) getWidth() / rect.width();
 
         translationX = - (getWidth() - rect.width()) / 2 * scale;
         matrix.postScale(scale, scale);
@@ -72,48 +115,20 @@ public class ParallaxDraweeView extends SimpleDraweeView {
     }
 
 
-    private void initTranslationValues() {
-        distance = (parentBottom - getHeight()) - parentTop;
-        lastTranslationY = -(ratio * getWidth() - getHeight());
-    }
-
-
-    public void scroll() {
+    /**
+     * translate actual image by offset.
+     *
+     * @param offset is between 0 to 1.
+     *               0 : view top      <->     image top
+     *               1 : view bottom   <->     image bottom
+     */
+    public void setOffset(float offset) {
         resetMatrix();
-        translate(getCurrentTranslationY());
-    }
 
-
-    private void resetMatrix() {
-        matrix.reset();
-        matrix.mapRect(rect);
-        matrix.postScale(scale, scale);
-        matrix.postTranslate(translationX, 0f);
-    }
-
-
-    int[] location = new int[2];
-    public float getCurrentTranslationY() {
-        getLocationInWindow(location);
-
-        int top = location[1];
-        float percent = (parentBottom - getHeight() - top) / distance;
-        return (1 - percent) * lastTranslationY;
-    }
-
-
-    private void translate(float y) {
-        matrix.postTranslate(0, y);
+        float translationY = (rect.height() * scale - getHeight()) * offset;
+        matrix.postTranslate(0, -translationY);
         postInvalidate();
     }
 
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        int saveCount = canvas.save();
-        canvas.concat(matrix);
-        super.onDraw(canvas);
-        canvas.restoreToCount(saveCount);
-    }
 
 }

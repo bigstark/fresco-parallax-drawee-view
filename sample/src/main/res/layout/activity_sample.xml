@@ -6,9 +6,35 @@
     android:layout_height="match_parent"
     tools:context="com.bigstark.fresco.parallax.SampleActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_sample"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        >
+
+        <com.bigstark.fresco.parallax.library.ParallaxDraweeView
+            xmlns:fresco="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/pdv_sample"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            fresco:viewAspectRatio="1"
+            fresco:fadeDuration="300"
+            fresco:actualImageScaleType="fitCenter"
+            />
+
+
+        <SeekBar
+            android:id="@+id/sb_sample"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:max="100"
+            />
+
+    </LinearLayout>
 
 </RelativeLayout>
+

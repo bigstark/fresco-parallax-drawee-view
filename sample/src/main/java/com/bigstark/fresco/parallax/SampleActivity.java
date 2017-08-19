@@ -2,41 +2,36 @@ package com.bigstark.fresco.parallax;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.widget.SeekBar;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
+import com.bigstark.fresco.parallax.library.ParallaxDraweeView;
 
 public class SampleActivity extends AppCompatActivity {
+
+    private ParallaxDraweeView pdvSample;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sample);
 
-        Fresco.initialize(this);
+        pdvSample = (ParallaxDraweeView) findViewById(R.id.pdv_sample);
+        pdvSample.setImageURI("http://vidur.net/wp-content/uploads/2017/04/17-mejores-ideas-sobre-iron-man-wallpaper-en-pinterest-ironman-iron-man-wallpaper-3.jpg");
 
-
-        RecyclerView rvSample = (RecyclerView) findViewById(R.id.rv_sample);
-        rvSample.setLayoutManager(new LinearLayoutManager(this));
-        rvSample.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        SeekBar seekBar = (SeekBar) findViewById(R.id.sb_sample);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                pdvSample.setOffset((float) progress / 100);
+            }
 
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                LinearLayoutManager layoutManager =  (LinearLayoutManager) recyclerView.getLayoutManager();
-                int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
-                int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
+            public void onStartTrackingTouch(SeekBar seekBar) {}
 
-                for (int i = firstVisibleItemPosition; i <= lastVisibleItemPosition; i++) {
-                    RecyclerView.ViewHolder holder = recyclerView.findViewHolderForLayoutPosition(i);
-                    if (holder instanceof SampleViewHolder) {
-                        ((SampleViewHolder) holder).scroll();
-                    }
-                }
-            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
-        rvSample.setAdapter(new SampleAdapter());
+
     }
 
 }
