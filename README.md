@@ -21,7 +21,7 @@ allprojects {
 ```
 ```
 dependencies {
-    compile 'com.github.bigstark:fresco-parallax-drawee-view:1.2'
+    compile 'com.github.bigstark:fresco-parallax-drawee-view:1.2.1'
 }
 ```
 
