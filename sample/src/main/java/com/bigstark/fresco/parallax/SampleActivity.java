@@ -1,35 +1,39 @@
 package com.bigstark.fresco.parallax;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.SeekBar;
 
 import com.bigstark.fresco.parallax.library.ParallaxDraweeView;
 
 public class SampleActivity extends AppCompatActivity {
 
-    private ParallaxDraweeView pdvSample;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sample);
 
-        pdvSample = (ParallaxDraweeView) findViewById(R.id.pdv_sample);
-        pdvSample.setImageURI("http://vidur.net/wp-content/uploads/2017/04/17-mejores-ideas-sobre-iron-man-wallpaper-en-pinterest-ironman-iron-man-wallpaper-3.jpg");
-
-        SeekBar seekBar = (SeekBar) findViewById(R.id.sb_sample);
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        findViewById(R.id.btn_range).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                pdvSample.setOffset((float) progress / 100);
+            public void onClick(View v) {
+                startActivity(new Intent(SampleActivity.this, RangeActivity.class));
             }
+        });
 
+        findViewById(R.id.btn_recycler_forward).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
+            public void onClick(View v) {
+                startActivity(new Intent(SampleActivity.this, RecyclerForwardActivity.class));
+            }
+        });
 
+        findViewById(R.id.btn_recycler_opposite).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
+            public void onClick(View v) {
+                startActivity(new Intent(SampleActivity.this, RecyclerOppositeActivity.class));
+            }
         });
 
     }
