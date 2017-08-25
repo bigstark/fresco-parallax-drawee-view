@@ -7,8 +7,11 @@ It is hard to use parallax effect in your app when you are using fresco image lo
 But if you use this library, you can use parallax effect while using fresco.
 
 ![ParallaxDraweeView](https://github.com/bigstark/fresco-parallax-drawee-view/blob/master/screenshots/ParallaxDraweeView.gif)</br>
-![ParallaxSample1](https://github.com/bigstark/fresco-parallax-drawee-view/blob/master/screenshots/parallax-scroll-forward.gif)
-![ParallaxSample2](https://github.com/bigstark/fresco-parallax-drawee-view/blob/master/screenshots/parallax-scroll-opposite.gif)
+
+| Parallax Sample1  | Parallax Sample2 |
+| ------------- | ------------- |
+| ![ParallaxSample1](https://github.com/bigstark/fresco-parallax-drawee-view/blob/master/screenshots/parallax-scroll-forward.gif)  | ![ParallaxSample2](https://github.com/bigstark/fresco-parallax-drawee-view/blob/master/screenshots/parallax-scroll-opposite.gif)  |
+
 
 
 ## Include your project
