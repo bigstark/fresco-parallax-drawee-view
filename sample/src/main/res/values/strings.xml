@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">FrescoParallaxDraweeView</string>
+
+    <string name="sample_menu_range">Example Range</string>
+    <string name="sample_menu_recycler_forward">Example RecyclerView Forward</string>
+    <string name="sample_menu_recycler_opposite">Example RecyclerView Opposite</string>
 </resources>
