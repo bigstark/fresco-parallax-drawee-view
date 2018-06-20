@@ -1,6 +1,7 @@
 # fresco-parallax-drawee-view
 [![license](https://img.shields.io/hexpm/l/plug.svg)](LICENSE)
 [![jitpack](https://img.shields.io/badge/jitpack-1.2-green.svg)](https://jitpack.io/#bigstark/fresco-parallax-drawee-view)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-fresco--parallax--drawee--view-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/6067)
 
 It is hard to use parallax effect in your app when you are using fresco image loader library.
 
